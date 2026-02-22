@@ -23,7 +23,7 @@ public class SecondServiceController {
     }
 
     @GetMapping("/message")
-    public String message(@RequestHeader("f-request") String header){
+    public String message(@RequestHeader("s-request") String header){
         log.info(header);
         return "Hello World in Second Service.";
     }
