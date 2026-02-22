@@ -3,6 +3,7 @@ package com.example.apigatewayservice.filter;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -16,9 +17,29 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
         super(Config.class);
     }
 
+//    @Override
+//    public GatewayFilter apply(Config config){
+//        return (exchange, chain)->{
+//            ServerHttpRequest req = exchange.getRequest();
+//            ServerHttpResponse res = exchange.getResponse();
+//
+//            log.info("Logging Filter baseMessage: {}, {}", config.getBaseMessage(), req.getRemoteAddress());
+//
+//            if (config.isPreLogger()) {
+//                log.info("Logging Filter Start: request uri -> {}", req.getURI().toString());
+//            }
+//
+//            return chain.filter(exchange).then(Mono.fromRunnable(()->{
+//                if(config.isPostLogger()){
+//                    log.info("Logging Filter End: response code -> {}", res.getStatusCode());
+//                }
+//            }));
+//        };
+//    }
+
     @Override
     public GatewayFilter apply(Config config){
-        return (exchange, chain)->{
+        GatewayFilter filter = new OrderedGatewayFilter((exchange, chain)->{
             ServerHttpRequest req = exchange.getRequest();
             ServerHttpResponse res = exchange.getResponse();
 
@@ -33,7 +54,9 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
                     log.info("Logging Filter End: response code -> {}", res.getStatusCode());
                 }
             }));
-        };
+        }, OrderedGatewayFilter.HIGHEST_PRECEDENCE);
+
+        return filter;
     }
 
     @Data
