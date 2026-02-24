@@ -18,6 +18,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  security:
+    user:
+      name: user
+      password: $2a$10$rJRnAL/14bd.JiX2qPDxCuxythbajNuf1fh2mrEfi9UPlNyLioJKe
+
 
 eureka:
   instance:
