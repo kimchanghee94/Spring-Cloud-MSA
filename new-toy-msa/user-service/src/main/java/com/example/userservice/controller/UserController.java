@@ -4,6 +4,7 @@ import com.example.userservice.Dto.UserDto;
 import com.example.userservice.Vo.Greeting;
 import com.example.userservice.Vo.RequestUser;
 import com.example.userservice.Vo.ResponseUser;
+import com.example.userservice.jpa.UserEntity;
 import com.example.userservice.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/user-service")
 public class UserController {
     private final Environment env;
     private final Greeting greeting;
@@ -37,6 +41,25 @@ public class UserController {
                 req.getRemoteHost(), req.getRequestURI(), req.getRequestURL());
 //        return env.getProperty("greeting.message");
         return greeting.getMessage();
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<ResponseUser>> getUsers(){
+        Iterable<UserEntity> userList = userService.getUserByAll();
+        List<ResponseUser> result = new ArrayList<>();
+        userList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseUser.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<ResponseUser> getUser(@PathVariable("userId") String userId){
+        UserDto userDto = userService.getUserByUserId(userId);
+        ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
     @PostMapping("/users")
