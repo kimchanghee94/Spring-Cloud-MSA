@@ -45,7 +45,10 @@ spring:
               predicates:
                 - Path=/user-service/**
                 - Method=GET
-
+              filters:
+                - RemoveRequestHeader=Cookie
+                - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+                - AuthorizationHeaderFilter
             - id: catalog-service
               uri: lb://CATALOG-SERVICE
               predicates:
@@ -78,3 +81,6 @@ spring:
                     postLogger: true
 #                - AddRequestHeader=s-request, 2nd-request-header-by-yaml
 #                - AddResponseHeader=s-response, 2nd-response-header-by-yaml
+
+token:
+  secret: my-very-long-secret-key-1234567890123456
