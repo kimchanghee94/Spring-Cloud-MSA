@@ -1,9 +1,9 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.Dto.UserDto;
-import com.example.userservice.Vo.Greeting;
-import com.example.userservice.Vo.RequestUser;
-import com.example.userservice.Vo.ResponseUser;
+import com.example.userservice.dto.UserDto;
+import com.example.userservice.vo.Greeting;
+import com.example.userservice.vo.RequestUser;
+import com.example.userservice.vo.ResponseUser;
 import com.example.userservice.jpa.UserEntity;
 import com.example.userservice.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user-service")
+@RequestMapping("/")
 public class UserController {
     private final Environment env;
     private final Greeting greeting;

@@ -1,4 +1,4 @@
-package com.example.userservice.Vo;
+package com.example.userservice.vo;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
