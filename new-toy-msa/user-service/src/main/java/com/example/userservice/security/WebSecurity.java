@@ -50,7 +50,7 @@ public class WebSecurity {
     }
 
     private AuthenticationFilter getAuthenticationFilter(AuthenticationManager manager) throws Exception{
-        AuthenticationFilter filter = new AuthenticationFilter();
+        AuthenticationFilter filter = new AuthenticationFilter(userService, env, manager);
         filter.setAuthenticationManager(manager);
         return filter;
     }
